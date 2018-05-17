@@ -1,9 +1,10 @@
-import wretch from 'wretch'
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button } from 'antd'
 import { inject } from 'mobx-react'
-const FormItem = Form.Item
 
+import api from './api'
+
+const FormItem = Form.Item
 class SignIn extends Component {
   state = {
     buttonType: 'primary',
@@ -55,7 +56,8 @@ class SignIn extends Component {
       this.setState({
         iconType: 'loading'
       })
-      wretch('http://localhost:5000/auth')
+      api
+        .url('/auth')
         .json(values)
         .post()
         .json()
@@ -64,7 +66,7 @@ class SignIn extends Component {
           setTimeout(() => {
             this.props.history.push('/meals')
           }, 1e3)
-          this.setState({ iconType: 'check', buttonType: 'success' })
+          this.setState({ iconType: 'check', buttonType: 'dashed' })
         })
         .catch(res => {
           this.setState({ iconType: 'close', buttonType: 'danger' })

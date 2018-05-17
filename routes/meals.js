@@ -28,7 +28,7 @@ route.get('/', authenticate, async (req, res) => {
 })
 
 route.post('/', authenticate, (req, res) => {
-  mealsdb.get('meals', async (_, meals) => {
+  mealsdb.get('meals', async (_, meals = []) => {
     try {
       const reply = await mealsdb.put('meals', meals.concat(req.body))
       res.json({
@@ -65,8 +65,26 @@ route.delete('/:id', authenticate, async (req, res) => {
   }
   const subIdx = meals[req.params.id]['subscribers'].indexOf(req.user.userName)
   meals[req.params.id]['subscribers'].splice(subIdx, 1)
-  mealsdb.put('meals', meals).then(() => {
-    res.json({ ok: true, message: 'unsubscribed from meal ' + req.params.id })
+  const reply = await mealsdb.put('meals', meals)
+  res.json({
+    ok: true,
+    message: 'unsubscribed from meal ' + req.params.id,
+    reply: orFalse(reply)
+  })
+})
+
+route.delete('/:id/delete', authenticate, async (req, res) => {
+  const meals = await mealsdb.get('meals')
+  if (!meals[req.params.id]) {
+    res.status(404).json({ ok: false, message: 'Meal plan not found' })
+    return
+  }
+  meals.splice(req.params.id, 1)
+  const reply = await mealsdb.put('meals', meals)
+  res.json({
+    ok: true,
+    message: 'Meal plan successfully deleted',
+    reply: orFalse(reply)
   })
 })
 

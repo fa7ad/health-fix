@@ -1,17 +1,41 @@
-import wretch from 'wretch'
+import * as R from 'ramda'
 import React, { Component } from 'react'
 import { inject } from 'mobx-react'
-import { Icon, List, Timeline } from 'antd'
+import { Icon, List, Timeline, Button } from 'antd'
 
+import api from './api'
 import Meals from './Meals'
 import SubButton from './SubscribeButton'
+import DeleteButton from './DeleteButton'
 import './ShowMeals.css'
+
+const mealWeight = {
+  breakfast: 0,
+  lunch: 1,
+  dinner: 2
+}
+
+const sortMealTimes = R.compose(
+  R.sortBy(([k, v]) => mealWeight[k]),
+  R.toPairs,
+  R.pickAll(R.keys(mealWeight))
+)
+
+const toTimelineItem = ([time, meal]) => (
+  <Timeline.Item
+    dot={<Icon type='clock-circle-o' />}
+    key={Date.now() + Math.random()}
+  >
+    <b>{time.toUpperCase()}: </b>{meal}
+  </Timeline.Item>
+)
 
 class ShowMeals extends Component {
   state = {
     loading: <Icon type='loading' />,
     mealPlans: [],
-    buttonContent: true
+    buttonContent: true,
+    isAdmin: false
   }
 
   render () {
@@ -30,24 +54,20 @@ class ShowMeals extends Component {
             itemLayout='horizontal'
             dataSource={this.state.mealPlans}
             renderItem={(item, ind) => (
-              <List.Item className='meal--item'>
+              <List.Item className='meal--item' key={ind}>
                 <Timeline>
-                  {Array.from(Object.entries(item), ([time, meal], idx) => {
-                    if (time === 'subscribed') return ''
-                    return (
-                      <Timeline.Item
-                        dot={<Icon type='clock-circle-o' />}
-                        key={idx}
-                      >
-                        <b>{time.toUpperCase()}: </b>{meal}
-                      </Timeline.Item>
-                    )
-                  })}
+                  {R.compose(R.map(toTimelineItem), sortMealTimes)(item)}
                 </Timeline>
-                <SubButton
-                  subscribed={item.subscribed}
-                  onToggleSub={this.toggleSub(ind)}
-                />
+                <Button.Group>
+                  <SubButton
+                    subscribed={item.subscribed}
+                    onToggleSub={this.toggleSub(ind)}
+                  />
+                  {this.state.isAdmin &&
+                    <DeleteButton deleteMeal={this.deleteMealData(ind)}>
+                      Delete Meal
+                    </DeleteButton>}
+                </Button.Group>
               </List.Item>
             )}
           />}
@@ -56,8 +76,9 @@ class ShowMeals extends Component {
   }
 
   componentDidMount () {
-    this.props.db.get('token').then(token =>
-      wretch('http://localhost:5000/meals')
+    this.props.db.get('token').then(token => {
+      api
+        .url('/meals')
         .auth(`Bearer ${token}`)
         .get()
         .error(404, res =>
@@ -66,24 +87,40 @@ class ShowMeals extends Component {
         .error(401, res => {
           this.props.history.push('/auth')
         })
-        .json(data => {
+        .json()
+        .then(data => {
           this.setState(p => ({
             loading: false,
             mealPlans: p.mealPlans.concat(data)
           }))
         })
-    )
+        .then(() => api.url('/admin').auth(`Bearer ${token}`).get().json())
+        .then(({ admin }) => this.setState({ isAdmin: admin }))
+    })
   }
 
   toggleSub = idx => subd => {
     this.props.db
       .get('token')
       .then(token =>
-        wretch(`http://localhost:5000/meals/${idx}`)
+        api
+          .url(`/meals/${idx}`)
           .auth(`Bearer ${token}`)[subd ? 'delete' : 'put']()
           .json()
       )
       .then(res => console.log(res))
+  }
+  deleteMealData = idx => () => {
+    this.props.db
+      .get('token')
+      .then(token =>
+        api.url(`/meals/${idx}/delete`).auth(`Bearer ${token}`).delete().json()
+      )
+      .then(res => {
+        if (!res.ok) throw new Error('Request Failed!')
+        this.setState(p => ({ mealPlans: R.remove(idx, 1, p.mealPlans) }))
+      })
+      .catch(e => console.warn(e))
   }
 }
 export default inject('db')(ShowMeals)

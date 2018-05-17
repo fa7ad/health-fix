@@ -1,8 +1,8 @@
-import wretch from 'wretch'
 import React, { Component } from 'react'
 import { Layout, Menu, Icon } from 'antd'
 import MdLocalRestaurant from 'react-icons/lib/md/local-restaurant'
 
+import api from './api'
 import './Meals.css'
 
 const { Header, Sider, Content } = Layout
@@ -52,15 +52,18 @@ class Meals extends Component {
   componentDidMount () {
     this.props.db
       .get('token')
-      .then(token =>
-        wretch('http://localhost:5000/admin')
-          .auth(`Bearer ${token}`)
-          .get()
-          .json()
-      )
+      .then(token => api.url('/admin').auth(`Bearer ${token}`).get().json())
       .then(({ admin }) => this.setState({ isAdmin: admin }))
-      .catch(res => {
-        this.props.history.push('/auth')
+      .catch(async res => {
+        try {
+          const resp = await this.props.db.del('token')
+          console.log(resp)
+        } catch (resp) {
+          console.log(resp)
+        }
+        setTimeout(() => {
+          this.props.history.push('/auth')
+        }, 3e2)
       })
   }
 }
