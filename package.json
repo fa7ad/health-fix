@@ -16,7 +16,7 @@
     "levelup": "^4.0.2",
     "localstorage-down": "^0.6.7",
     "lodash.capitalize": "^4.2.1",
-    "mobx": "^4.2.0",
+    "mobx": "^4.11.0",
     "mobx-react": "^5.0.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
