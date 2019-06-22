@@ -38,7 +38,7 @@
     "dev": "run-p \"start\" \"server:dev\""
   },
   "devDependencies": {
-    "nodemon": "^1.17.4",
+    "nodemon": "^1.19.1",
     "npm-run-all": "^4.1.2"
   }
 }
