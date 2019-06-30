@@ -6131,9 +6131,9 @@ mobx-react@^6.1.1:
   dependencies:
     mobx-react-lite "1.4.0"
 
-mobx@^4.11.0:
-  version "4.11.0"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-4.11.0.tgz#c3bfcab96623d1f2f2eb4d1f01199c225f62361e"
+mobx@^5.10.1:
+  version "5.10.1"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.10.1.tgz#eb0e2ff76fe376d0a42c941533260deeae5956d8"
 
 moment@2.x, moment@^2.19.3:
   version "2.22.1"
