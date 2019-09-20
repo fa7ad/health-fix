@@ -5730,9 +5730,9 @@ level-iterator-stream@~4.0.0:
     readable-stream "^3.0.2"
     xtend "^4.0.0"
 
-leveldown@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-5.2.0.tgz#ac8901e6a0106dc9d8afcaa078b128e5d9c84076"
+leveldown@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-5.2.1.tgz#eadc2184ab4c83fe0d74853384fe99dc0a0de6be"
   dependencies:
     abstract-leveldown "~6.1.1"
     napi-macros "~2.0.0"
