@@ -26,7 +26,7 @@
     "react-icons": "^3.7.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "wretch": "^1.5.4"
+    "wretch": "^1.5.5"
   },
   "scripts": {
     "start": "react-scripts start",
