@@ -1521,13 +1521,6 @@ abstract-leveldown@^6.2.1, abstract-leveldown@~6.2.1:
     level-supports "~1.0.0"
     xtend "~4.0.0"
 
-abstract-leveldown@~6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/abstract-leveldown/-/abstract-leveldown-6.1.1.tgz#f44bad5862d71c7b418110d7698ac25bedf24396"
-  dependencies:
-    level-concat-iterator "~2.0.0"
-    xtend "~4.0.0"
-
 accepts@~1.3.4, accepts@~1.3.7:
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/accepts/-/accepts-1.3.7.tgz#531bc726517a3b2b41f850021c6cc15eaab507cd"
@@ -6026,11 +6019,11 @@ level-supports@~1.0.0:
   dependencies:
     xtend "^4.0.2"
 
-leveldown@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-5.3.0.tgz#cc228088b184901d52b54bd70518543bfb059406"
+leveldown@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-5.4.0.tgz#fd6731af2c7fd717c878eb05c87c12036e986e93"
   dependencies:
-    abstract-leveldown "~6.1.1"
+    abstract-leveldown "~6.2.1"
     napi-macros "~2.0.0"
     node-gyp-build "~4.1.0"
 
