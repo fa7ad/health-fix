@@ -4,7 +4,7 @@
   "homepage": "/",
   "private": true,
   "dependencies": {
-    "antd": "^3.26.4",
+    "antd": "^3.26.5",
     "bcrypt": "^3.0.7",
     "body-parser": "^1.18.2",
     "cors": "^2.8.5",
