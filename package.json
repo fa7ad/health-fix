@@ -17,7 +17,7 @@
     "localstorage-down": "^0.6.7",
     "lodash.capitalize": "^4.2.1",
     "mobx": "^5.15.2",
-    "mobx-react": "^6.1.4",
+    "mobx-react": "^6.1.5",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "ramda": "^0.26.1",
